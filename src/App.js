@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import Board from './Board';
+import { SSL_OP_CIPHER_SERVER_PREFERENCE } from 'constants';
 
 const H1 = styled.h1`
   font-size: 96px;
@@ -15,6 +16,7 @@ class App extends Component {
     this.state = { snake: [[1, 2], [2, 2], [3, 2]] };
     this.gridSize = 20;
     this.dir = 'right';
+    this.level = 1;
   }
   componentDidMount() {
     this.interval = setInterval(this.update, 500);
@@ -35,9 +37,15 @@ class App extends Component {
       } else if (dir === 'up') {
         nextPos = [x, y === 1 ? this.gridSize : y - 1];
       }
-      return { snake: prev.snake.concat([nextPos]) };
+      const snake = this.makeNewSnake(prev.snake, nextPos, this.level);
+      return {
+        snake,
+      };
     });
   };
+  makeNewSnake(prevSnake, nextPos, level) {
+    return prevSnake.concat([nextPos]).slice(-1 * (level + 4));
+  }
   render() {
     return (
       <div className="App">
