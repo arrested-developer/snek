@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import Board from './Board';
-import { SSL_OP_CIPHER_SERVER_PREFERENCE } from 'constants';
 
 const H1 = styled.h1`
   font-size: 96px;
