@@ -15,14 +15,27 @@ class App extends Component {
     this.state = { snake: [[1, 2], [2, 2], [3, 2]] };
   }
   componentDidMount() {
-    this.interval = setInterval(this.moveSnake, 500);
+    this.interval = setInterval(this.update, 500);
   }
-  moveSnake = () => {
-    this.setState(s => {
-      const prevSnake = s.snake;
-      const [lastX, lastY] = prevSnake[prevSnake.length - 1];
-      const newPos = [lastX + 1, lastY];
-      return { snake: prevSnake.concat([newPos]) };
+  update = () => {
+    this.moveSnake('down');
+  };
+  moveSnake = dir => {
+    let changeX = 0;
+    let changeY = 0;
+    if (dir === 'right') {
+      changeX = 1;
+    } else if (dir === 'left') {
+      changeX = -1;
+    } else if (dir === 'down') {
+      changeY = 1;
+    } else if (dir === 'up') {
+      changeY = -1;
+    }
+    this.setState(prev => {
+      const [lastX, lastY] = prev.snake[prev.snake.length - 1];
+      const newPos = [lastX + changeX, lastY + changeY];
+      return { snake: prev.snake.concat([newPos]) };
     });
   };
   render() {
