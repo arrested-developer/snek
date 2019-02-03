@@ -32,10 +32,18 @@ class App extends Component {
       }
     });
   }
+  setSpeed = level => {
+    let q = 1;
+    if (level < 10) q = 2 + level / 3;
+    else if (level < 20) q = 5.25 + (level - 10) / 4;
+    else if (level < 25) q = 7.5 + (level - 20) / 6;
+    else q = 8.2 + (level - 25) / 8;
+    return 500 / q;
+  };
   startInterval = () => {
     const egg = this.newEgg();
     this.setState(s => ({ egg }));
-    this.interval = setInterval(this.updateBoard, 400 / this.level);
+    this.interval = setInterval(this.updateBoard, this.setSpeed(this.level));
   };
   stopInterval = () => {
     clearInterval(this.interval);
