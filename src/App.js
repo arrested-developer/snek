@@ -21,7 +21,6 @@ class App extends Component {
   componentDidMount() {
     this.interval = setInterval(this.update, 500);
     window.addEventListener('keydown', e => {
-      e.stopPropagation();
       if (e.code === 'ArrowUp') {
         this.setNextDir('up');
       } else if (e.code === 'ArrowDown') {
