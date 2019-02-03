@@ -40,6 +40,10 @@ class App extends Component {
   stopInterval = () => {
     clearInterval(this.interval);
   };
+  resetInterval = () => {
+    this.stopInterval();
+    this.startInterval();
+  };
   newEgg = () => {
     const randomWithin = n => Math.ceil(Math.random() * n);
     const eggPos = [randomWithin(this.gridSize), randomWithin(this.gridSize)];
@@ -66,34 +70,47 @@ class App extends Component {
   };
   updateBoard = () => {
     this.dir = this.nextDir;
+    if (this.snakeFoundEgg()) console.log('EGGY');
     this.moveSnake(this.dir);
   };
-  moveSnake = dir => {
+  moveSnake = () => {
     this.setState(prev => {
-      const [x, y] = prev.snake[prev.snake.length - 1];
-      let nextPos;
-      if (dir === 'right') {
-        nextPos = [x === this.gridSize ? 1 : x + 1, y];
-      } else if (dir === 'left') {
-        nextPos = [x === 1 ? this.gridSize : x - 1, y];
-      } else if (dir === 'down') {
-        nextPos = [x, y === this.gridSize ? 1 : y + 1];
-      } else if (dir === 'up') {
-        nextPos = [x, y === 1 ? this.gridSize : y - 1];
-      }
+      const nextPos = this.getNextPos(prev.snake);
       const snake = this.makeNewSnake(prev.snake, nextPos, this.level);
       return {
         snake,
       };
     });
   };
+  snakeFoundEgg = () =>
+    this.coordsMatch(this.getNextPos(this.state.snake), this.state.egg);
+  getNextPos = snake => {
+    const [x, y] = snake[snake.length - 1];
+    let nextPos;
+    if (this.dir === 'right') {
+      nextPos = [x === this.gridSize ? 1 : x + 1, y];
+    } else if (this.dir === 'left') {
+      nextPos = [x === 1 ? this.gridSize : x - 1, y];
+    } else if (this.dir === 'down') {
+      nextPos = [x, y === this.gridSize ? 1 : y + 1];
+    } else if (this.dir === 'up') {
+      nextPos = [x, y === 1 ? this.gridSize : y - 1];
+    }
+    return nextPos;
+  };
   makeNewSnake(prevSnake, nextPos, level) {
     return prevSnake.concat([nextPos]).slice(-1 * (level + 4));
   }
+  levelUp = () => {
+    this.level++;
+    this.setState(s => ({ egg: this.newEgg() }));
+  };
   render() {
     return (
       <div className="App">
         <H1>Snek</H1>
+        <div>snakeHead {this.state.snake.slice(-1)}</div>
+        <div>egg: {this.state.egg && this.state.egg.join(',')}</div>
         <Board
           snake={this.state.snake}
           egg={this.state.egg}
