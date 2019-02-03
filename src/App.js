@@ -8,16 +8,18 @@ const H1 = styled.h1`
   font-size: 96px;
   margin: 16px;
   font-weight: bold;
+  font-family: 'Helvetica', 'Arial', sans-serif;
 `;
 
 const ScoreBoard = styled.div`
   margin: 16px;
+  font-size: 24px;
 `;
 
 class App extends Component {
   constructor() {
     super();
-    this.state = { snake: [[1, 2]], egg: false };
+    this.state = { snake: [[1, 4]], egg: false };
     this.gridSize = 25;
     this.dir = 'right';
     this.nextDir = 'right';
@@ -140,7 +142,7 @@ class App extends Component {
   };
   resetGame = () => {
     this.setState({
-      snake: [[1, 2]],
+      snake: [[1, 4]],
       egg: false,
     });
     this.level = 1;
