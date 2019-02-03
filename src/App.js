@@ -35,7 +35,7 @@ class App extends Component {
   startInterval = () => {
     const egg = this.newEgg();
     this.setState(s => ({ egg }));
-    this.interval = setInterval(this.updateBoard, 500);
+    this.interval = setInterval(this.updateBoard, 400 / this.level);
   };
   stopInterval = () => {
     clearInterval(this.interval);
@@ -70,7 +70,7 @@ class App extends Component {
   };
   updateBoard = () => {
     this.dir = this.nextDir;
-    if (this.snakeFoundEgg()) console.log('EGGY');
+    if (this.snakeFoundEgg()) this.levelUp();
     this.moveSnake(this.dir);
   };
   moveSnake = () => {
@@ -104,6 +104,8 @@ class App extends Component {
   levelUp = () => {
     this.level++;
     this.setState(s => ({ egg: this.newEgg() }));
+    this.stopInterval();
+    this.startInterval();
   };
   render() {
     return (
