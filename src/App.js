@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import Board from './Board';
+import Message from './Message';
 
 const H1 = styled.h1`
   font-size: 96px;
@@ -9,14 +10,19 @@ const H1 = styled.h1`
   font-weight: bold;
 `;
 
+const ScoreBoard = styled.div`
+  margin: 16px;
+`;
+
 class App extends Component {
   constructor() {
     super();
     this.state = { snake: [[1, 2]], egg: false };
-    this.gridSize = 20;
+    this.gridSize = 25;
     this.dir = 'right';
     this.nextDir = 'right';
     this.level = 1;
+    this.gameOver = false;
   }
   componentDidMount() {
     this.startInterval();
@@ -30,6 +36,9 @@ class App extends Component {
       } else if (e.code === 'ArrowRight') {
         this.setNextDir('right');
       }
+    });
+    window.addEventListener('click', e => {
+      if (this.gameOver) this.resetGame();
     });
   }
   setSpeed = level => {
@@ -78,6 +87,7 @@ class App extends Component {
   };
   updateBoard = () => {
     this.dir = this.nextDir;
+    if (this.snakeCollided()) this.endGame();
     if (this.snakeFoundEgg()) this.levelUp();
     this.moveSnake(this.dir);
   };
@@ -92,6 +102,15 @@ class App extends Component {
   };
   snakeFoundEgg = () =>
     this.coordsMatch(this.getNextPos(this.state.snake), this.state.egg);
+  snakeCollided = () => {
+    const nextPos = this.getNextPos(this.state.snake);
+    // if nextPos is any of the existing body positions
+    let collision = false;
+    this.state.snake.forEach(s => {
+      if (this.coordsMatch(s, nextPos)) collision = true;
+    });
+    return collision;
+  };
   getNextPos = snake => {
     const [x, y] = snake[snake.length - 1];
     let nextPos;
@@ -115,17 +134,31 @@ class App extends Component {
     this.stopInterval();
     this.startInterval();
   };
+  endGame = () => {
+    this.stopInterval();
+    this.gameOver = true;
+  };
+  resetGame = () => {
+    this.setState({
+      snake: [[1, 2]],
+      egg: false,
+    });
+    this.level = 1;
+    this.dir = this.nextDir = 'right';
+    this.gameOver = false;
+    this.startInterval();
+  };
   render() {
     return (
       <div className="App">
         <H1>Snek</H1>
-        <div>snakeHead {this.state.snake.slice(-1)}</div>
-        <div>egg: {this.state.egg && this.state.egg.join(',')}</div>
+        <ScoreBoard>Score: {this.level}</ScoreBoard>
         <Board
           snake={this.state.snake}
           egg={this.state.egg}
           gridSize={this.gridSize}
         />
+        {this.gameOver && <Message>Game Over!</Message>}
       </div>
     );
   }
