@@ -21,12 +21,17 @@ const Snake = styled.div`
   grid-row-start: ${props => props.posY};
 `;
 
+const Egg = styled(Snake)`
+  background: red;
+`;
+
 const Board = props => {
   return (
     <Grid gridSize={props.gridSize}>
       {props.snake.map(s => (
         <Snake posX={s[0]} posY={s[1]} />
       ))}
+      {props.egg && <Egg posX={props.egg[0]} posY={props.egg[1]} />}
     </Grid>
   );
 };

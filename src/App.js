@@ -12,7 +12,7 @@ const H1 = styled.h1`
 class App extends Component {
   constructor() {
     super();
-    this.state = { snake: [[1, 2], [2, 2], [3, 2]] };
+    this.state = { snake: [[1, 2]], egg: false };
     this.gridSize = 20;
     this.dir = 'right';
     this.nextDir = 'right';
@@ -32,12 +32,27 @@ class App extends Component {
       }
     });
   }
-  startInterval() {
-    this.interval = setInterval(this.update, 500);
-  }
-  stopInterval() {
+  startInterval = () => {
+    const egg = this.newEgg();
+    this.setState(s => ({ egg }));
+    this.interval = setInterval(this.updateBoard, 500);
+  };
+  stopInterval = () => {
     clearInterval(this.interval);
-  }
+  };
+  newEgg = () => {
+    const randomWithin = n => Math.ceil(Math.random() * n);
+    const eggPos = [randomWithin(this.gridSize, randomWithin(this.gridSize))];
+    let clash = false;
+    this.state.snake.forEach(part => {
+      if (this.coordsMatch(part, eggPos)) clash = true;
+    });
+    if (clash) return this.newEgg();
+    else return eggPos;
+  };
+  coordsMatch = (a, b) => {
+    return a[0] === b[0] && a[1] === b[1];
+  };
   setNextDir = dir => {
     const opposite = {
       up: 'down',
@@ -49,7 +64,7 @@ class App extends Component {
       this.nextDir = dir;
     }
   };
-  update = () => {
+  updateBoard = () => {
     this.dir = this.nextDir;
     this.moveSnake(this.dir);
   };
@@ -79,7 +94,11 @@ class App extends Component {
     return (
       <div className="App">
         <H1>Snek</H1>
-        <Board snake={this.state.snake} gridSize={this.gridSize} />
+        <Board
+          snake={this.state.snake}
+          egg={this.state.egg}
+          gridSize={this.gridSize}
+        />
       </div>
     );
   }
