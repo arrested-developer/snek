@@ -19,7 +19,7 @@ class App extends Component {
     this.level = 1;
   }
   componentDidMount() {
-    this.interval = setInterval(this.update, 500);
+    this.startInterval();
     window.addEventListener('keydown', e => {
       if (e.code === 'ArrowUp') {
         this.setNextDir('up');
@@ -31,6 +31,12 @@ class App extends Component {
         this.setNextDir('right');
       }
     });
+  }
+  startInterval() {
+    this.interval = setInterval(this.update, 500);
+  }
+  stopInterval() {
+    clearInterval(this.interval);
   }
   setNextDir = dir => {
     const opposite = {
