@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import Board from './Board';
 import Message from './Message';
+import Footer from './Footer';
 
 const H1 = styled.h1`
   font-size: 96px;
@@ -161,6 +162,7 @@ class App extends Component {
           gridSize={this.gridSize}
         />
         {this.gameOver && <Message>Game Over!</Message>}
+        <Footer />
       </div>
     );
   }
