@@ -16,12 +16,37 @@ class App extends Component {
     this.state = { snake: [[1, 2], [2, 2], [3, 2]] };
     this.gridSize = 20;
     this.dir = 'right';
+    this.nextDir = 'right';
     this.level = 1;
   }
   componentDidMount() {
     this.interval = setInterval(this.update, 500);
+    window.addEventListener('keydown', e => {
+      e.stopPropagation();
+      if (e.code === 'ArrowUp') {
+        this.setNextDir('up');
+      } else if (e.code === 'ArrowDown') {
+        this.setNextDir('down');
+      } else if (e.code === 'ArrowLeft') {
+        this.setNextDir('left');
+      } else if (e.code === 'ArrowRight') {
+        this.setNextDir('right');
+      }
+    });
   }
+  setNextDir = dir => {
+    const opposite = {
+      up: 'down',
+      down: 'up',
+      right: 'left',
+      left: 'right',
+    };
+    if (dir !== opposite[this.dir]) {
+      this.nextDir = dir;
+    }
+  };
   update = () => {
+    this.dir = this.nextDir;
     this.moveSnake(this.dir);
   };
   moveSnake = dir => {
