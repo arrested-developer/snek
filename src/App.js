@@ -42,7 +42,7 @@ class App extends Component {
   };
   newEgg = () => {
     const randomWithin = n => Math.ceil(Math.random() * n);
-    const eggPos = [randomWithin(this.gridSize, randomWithin(this.gridSize))];
+    const eggPos = [randomWithin(this.gridSize), randomWithin(this.gridSize)];
     let clash = false;
     this.state.snake.forEach(part => {
       if (this.coordsMatch(part, eggPos)) clash = true;
