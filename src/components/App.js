@@ -1,21 +1,10 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
 
 import Board from './Board';
 import Message from './Message';
 import Footer from './Footer';
 
-const H1 = styled.h1`
-  font-size: 96px;
-  margin: 16px;
-  font-weight: bold;
-  font-family: 'Helvetica', 'Arial', sans-serif;
-`;
-
-const ScoreBoard = styled.div`
-  margin: 16px;
-  font-size: 24px;
-`;
+import { H1, ScoreBoard } from './App.styles';
 
 class App extends Component {
   constructor() {

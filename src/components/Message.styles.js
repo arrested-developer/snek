@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 
 const FullScreenWrapper = styled.div`
@@ -19,10 +18,4 @@ const MessageContainer = styled.div`
   padding: 16px;
 `;
 
-const Message = props => (
-  <FullScreenWrapper>
-    <MessageContainer>{props.children}</MessageContainer>
-  </FullScreenWrapper>
-);
-
-export default Message;
+export { FullScreenWrapper, MessageContainer };

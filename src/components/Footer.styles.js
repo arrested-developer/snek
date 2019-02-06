@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 
 const Footer = styled.footer`
@@ -17,15 +16,4 @@ const Footer = styled.footer`
   }
 `;
 
-const MyFooter = props => {
-  return (
-    <Footer>
-      Built by{' '}
-      <a href={'https://github.com/arrested-developer'} target={'_blank'}>
-        @arrested-developer
-      </a>
-    </Footer>
-  );
-};
-
-export default MyFooter;
+export { Footer };
