@@ -22,6 +22,10 @@ The React client is built with the `npm run build` command, and compiles to `./b
 
 This is a purely front-end React project and for maxiumum speed can be deployed from a serverless environment / CDN such as Netlify.
 
+## To Play
+
+Use your arrow keys to direct the snek. There are no controls for mobile browsers (yet).
+
 
 ## Built With
 
